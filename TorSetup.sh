@@ -2,11 +2,11 @@
 
 # Update system packages
 sudo apt update
-apt install apt-transport-https
 sudo apt upgrade -y
+sudo apt update
 
 # Install Tor, Nyx, and other necessary packages
-sudo apt install tor nyx unattended-upgrades -y
+sudo apt install tor nyx apt-transport-https -y
 
 # Shows the user their Debian version
 echo "This is your Debian version"
