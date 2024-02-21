@@ -16,7 +16,7 @@ cat /etc/debian_version
 read -p "Enter your Debian version: " debianversion
 read -p "Enter your Tor node nickname: " nickname
 read -p "Enter your email address: " contact_info
-read -p "Enter your monthly allotted bandwidth in GB (default is 1000): " bandwidth
+read -p "Enter your monthly allotted bandwidth in GB: " bandwidth
 bandwidth=${bandwidth:-1000}
 
 # Create a new sources file
@@ -43,7 +43,7 @@ SocksPort 0
 ## (up/down) per month, starting on the 1st 
 ## at midnight
 AccountingMax ${bandwidth} GB
-AccountingStart 1 GB
+AccountingStart month 1 0:00
 ## MONITORING
 
 ControlPort 9051
