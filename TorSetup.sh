@@ -3,10 +3,34 @@
 # Update system packages
 sudo apt update
 sudo apt upgrade -y
-sudo apt update
 
 # Install Tor, Nyx, and other necessary packages
-sudo apt install tor nyx apt-transport-https -y
+sudo apt install tor nyx apt-transport-https unattended-upgrades -y
+
+# Configures unattended-upgrades
+config_file="/etc/apt/apt.conf.d/50unattended-upgrades"
+
+# Check if the file exists before proceeding
+if [ -f "$config_file" ]; then
+    # Backup the original file before making changes
+    cp "$config_file" "$config_file.bak"
+    
+    # Replace the block of code in the file
+    sed -i '/Unattended-Upgrade::Allowed-Origins {/,/};/d' "$config_file"
+    cat <<EOF >> "$config_file"
+Unattended-Upgrade::Allowed-Origins {
+  "\${distro_id}:\${distro_codename}-security";
+  "TorProject:\${distro_codename}";
+};
+Unattended-Upgrade::Package-Blacklist {
+};
+Unattended-Upgrade::Automatic-Reboot "true";
+EOF
+
+    echo "Block of code replaced successfully."
+else
+    echo "Config file not found."
+fi
 
 # Shows the user their Debian version
 echo "This is your Debian version"
