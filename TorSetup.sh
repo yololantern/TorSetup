@@ -1,4 +1,8 @@
-#!/bin/bash
+# Prompt user for nickname, contact info, and monthly bandwidth
+read -p "Enter your Tor node nickname: " nickname
+read -p "Enter your email address: " contact_info
+read -p "Enter your monthly allotted bandwidth in GB: " bandwidth
+bandwidth=${bandwidth:-1000}
 
 # Update system packages
 sudo apt update
@@ -45,13 +49,6 @@ EOF
 else
     echo "Config file not found."
 fi
-
-# Prompt user for nickname, contact info, and monthly bandwidth
-read -p "Enter your Tor node nickname: " nickname
-read -p "Enter your email address: " contact_info
-read -p "Enter your monthly allotted bandwidth in GB: " bandwidth
-bandwidth=${bandwidth:-1000}
-
 
 # Add the GPG Key
 wget -qO- https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --dearmor | tee /usr/share/keyrings/tor-archive-keyring.gpg >/dev/null
