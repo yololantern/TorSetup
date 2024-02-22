@@ -8,7 +8,7 @@ sudo apt update
 sudo apt upgrade -y
 
 # Install Nyx and other necessary packages
-sudo apt install nyx apt-transport-https unattended-upgrades -y
+sudo apt install nyx apt-transport-https unattended-upgrades apt-listchanges -y
 
 # Configures unattended-upgrades
 config_file="/etc/apt/apt.conf.d/50unattended-upgrades"
