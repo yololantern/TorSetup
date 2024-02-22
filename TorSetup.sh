@@ -4,11 +4,22 @@
 sudo apt update
 sudo apt upgrade -y
 
-# Install Tor, Nyx, and other necessary packages
+# Install Nyx and other necessary packages
 sudo apt install nyx apt-transport-https unattended-upgrades -y
 
+# Auto-detect Debian version
+debianversion=$(cat /etc/debian_version | cut -d'/' -f1)
+echo "Auto-detected Debian version is ${debianversion}"
+
+# Adds tor project files to update list
+echo "Setting up your Tor sources file with your Debian version: $debianversion"
+cat <<EOL | sudo tee -a /etc/apt/sources.list.d/tor.list
+deb [signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org $debianversion main
+deb-src [signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org $debianversion main
+EOL
+
 sudo apt update
-sudo apt-get install tor -y  # This line will install/upgrade Tor
+sudo apt-get install tor -y
 
 # Configures unattended-upgrades
 config_file="/etc/apt/apt.conf.d/50unattended-upgrades"
@@ -41,19 +52,6 @@ read -p "Enter your email address: " contact_info
 read -p "Enter your monthly allotted bandwidth in GB: " bandwidth
 bandwidth=${bandwidth:-1000}
 
-# Auto-detect Debian version
-debianversion=$(cat /etc/debian_version | cut -d'/' -f1)
-echo "Auto-detected Debian version is ${debianversion}"
-
-# Adds tor project files to update list
-echo "Setting up your Tor sources file with your Debian version: $debianversion"
-cat <<EOL | sudo tee -a /etc/apt/sources.list.d/tor.list
-deb [signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org $debianversion main
-deb-src [signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org $debianversion main
-EOL
-
-sudo apt update
-sudo apt-get install tor -y
 
 # Add the GPG Key
 wget -qO- https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc | gpg --dearmor | tee /usr/share/keyrings/tor-archive-keyring.gpg >/dev/null
