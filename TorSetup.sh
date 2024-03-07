@@ -36,14 +36,14 @@ else
 fi
 
 # Auto-detect Debian version
-debianversion=$(cat /etc/debian_version | cut -d'/' -f1)
-echo "Auto-detected Debian version is ${debianversion}"
+# debianversion=$(cat /etc/debian_version | cut -d'/' -f1)
+# echo "Auto-detected Debian version is ${debianversion}"
 
 # Adds tor project files to update list
-echo "Setting up your Tor sources file with your Debian version: $debianversion"
+# echo "Setting up your Tor sources file with your Debian version: $debianversion"
 cat <<EOL | sudo tee -a /etc/apt/sources.list.d/tor.list
-deb [signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org $debianversion main
-deb-src [signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org $debianversion main
+deb [signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org focal main
+deb-src [signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org focal main
 EOL
 
 sudo apt update
